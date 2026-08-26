@@ -11,8 +11,9 @@
 # catálogo sobrevive al redeploy), así que no crea duplicados.
 set -uo pipefail
 
-DEMO_DIR="/home/triageuser/CertVerificableDGII/dgii-demo"
-GO_DIR="/home/triageuser/CertVerificableDGII/verifiably/verifiably-go"
+DEMO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$DEMO_DIR/.." && pwd)"
+GO_DIR="$ROOT_DIR/verifiably/verifiably-go"
 OFV_DIR="$DEMO_DIR/ofv-api"
 ENV_FILE="$GO_DIR/.env"
 APIKEY="change-me-provision-key"
@@ -28,25 +29,20 @@ warn() { printf '\033[1;33m! %s\033[0m\n' "$*"; }
 die()  { printf '\033[1;31m✗ %s\033[0m\n' "$*" >&2; exit 1; }
 
 # --- 1) IP -------------------------------------------------------------------
+# La detección vive en lib/detect-ip.sh porque set-network.sh la necesita igual
+# y porque tiene que cubrir WSL, Git Bash y Linux nativo.
+# shellcheck source=lib/detect-ip.sh
+. "$DEMO_DIR/lib/detect-ip.sh"
+
 say "Detectando IP de la red actual"
 if [[ "${1:-}" != "" ]]; then
   IP="$1"
 else
-  # Prioridad: (a) adaptador del Mobile Hotspot de Windows (192.168.137.x), luego
-  # (b) el adaptador Wi-Fi normal. El hotspot aparece como
-  # "Wireless LAN adapter Local Area Connection* N" con gateway 192.168.137.1.
-  ALL="$(ipconfig.exe 2>/dev/null | tr -d '\r')"
-  IP="$(printf '%s\n' "$ALL" | awk '/IPv4 Address/{n=split($0,a,":");gsub(/ /,"",a[n]); if(a[n] ~ /^192\.168\.137\./){print a[n]; exit}}')"
-  if [[ -z "${IP:-}" ]]; then
-    IP="$(printf '%s\n' "$ALL" | awk '
-      /[Ww]ireless LAN adapter Wi-Fi/ {inwifi=1; next}
-      /^[A-Za-z].*adapter/            {inwifi=0}
-      inwifi && /IPv4 Address/ { n=split($0,a,":"); gsub(/ /,"",a[n]); print a[n]; exit }')"
-  fi
+  IP="$(detect_lan_ip)"
 fi
 [[ "${IP:-}" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
-  warn "No detecté una IP Wi-Fi válida. Candidatas:"
-  ipconfig.exe 2>/dev/null | tr -d '\r' | grep -iE "adapter|IPv4" >&2
+  warn "No detecté una IP válida. Candidatas:"
+  show_ip_candidates
   die "Pásala a mano:  ./switch-network.sh <IP>"
 }
 ok "IP a usar: $IP"

@@ -44,29 +44,45 @@ siembra el catálogo si el archivo aún no existe).
 ## Puesta en marcha
 
 ```bash
-git clone <este-repo> CertVerificableDGII
+git clone https://github.com/MisaelVasquez/CertVerificableDGII.git
 cd CertVerificableDGII
-./bootstrap.sh                    # clona verifiably, instala el estado, crea el venv
-# rellena dgii-demo/ofv-api/.env con los secretos (ver más abajo)
+./bootstrap.sh                    # clona verifiably, instala el estado, prepara el OFV
 cd dgii-demo && ./switch-network.sh
 ```
+
+Con Docker Desktop abierto, eso es todo. El primer `switch-network.sh` descarga varios GB
+de imágenes: cuenta con 15-30 minutos y ~12 GB de RAM libres.
 
 Portales en `http://localhost:8092/` (hub, DGII, verificador) y la UI de verifiably en
 `http://localhost:8080` (Holder: `holder/holder`).
 
+### Plataformas
+
+| Plataforma | Estado |
+|---|---|
+| **WSL2 sobre Windows** | Probado. Es donde se desarrolló y validó el ciclo completo. |
+| **Linux nativo** | Debería funcionar. La detección de IP tiene su rama propia (`ip route`), pero no se ha probado end-to-end. |
+| **Git Bash en Windows** (sin WSL) | Best-effort. `ipconfig.exe` funciona igual que en WSL, pero `deploy.sh` de upstream no está probado ahí y la traducción de rutas de MinGW puede romper los montajes de Docker. Además Docker Desktop necesitaría el backend Hyper-V, que pide Windows Pro/Enterprise. |
+| **macOS** | No soportado. `deploy.sh` de upstream usa `sed -i` con sintaxis GNU y el `sed` BSD de macOS falla. `bootstrap.sh` lo detecta y aborta de entrada. |
+
+Si la detección automática de IP falla en tu plataforma, todos los scripts aceptan la IP
+como primer argumento: `./switch-network.sh 192.168.1.50`. Esa es la vía de escape universal.
+
 ### Lo que NO viene en el repo
 
-Por diseño, ningún secreto está versionado. Tras el bootstrap hay que rellenar
-`dgii-demo/ofv-api/.env` (plantilla en `.env.example`):
+Ningún secreto está versionado. `bootstrap.sh` deja `ofv-api/.env` listo con los dos valores
+que **no** son secretos (`VERIFIABLY_API_KEY`, que es el default público del stack, y
+`VERIFIABLY_SCHEMA_ID`), así que el demo arranca sin edición manual.
 
-- `VERIFIABLY_API_KEY` — por defecto el stack arranca con `change-me-provision-key`
-- `VERIFIABLY_SCHEMA_ID=custom-dk017rvq43zd`
-- `GRAPH_*` y `OFV_EMAIL_ENABLED=true` — **sólo** si quieres envío de correo. Requiere un
-  app registration propio en Entra con permiso de aplicación `Mail.Send`, consentimiento de
-  administrador y un buzón emisor.
+Lo único que queda por rellenar a mano son los `GRAPH_*` junto con `OFV_EMAIL_ENABLED=true`,
+y **sólo** si quieres envío de correo: requiere un app registration propio en Entra con
+permiso de aplicación `Mail.Send`, consentimiento de administrador y un buzón emisor. Sin
+eso el demo funciona igual — la respuesta trae el `offer_uri` y el QR.
 
 Tampoco se versionan `data/credencial-correos.json` ni `data/credencial-bitacora.json`:
 son estado de ejecución y contienen direcciones de correo reales. Se regeneran solos.
+Los volúmenes de Postgres tampoco viajan, así que en una máquina nueva las status lists
+arrancan vacías y el panel del operador sale sin credenciales hasta que emitas la primera.
 
 ## Trampa conocida: el `vct` y la IP
 

@@ -9,8 +9,9 @@
 # Requiere: WSL con acceso a ipconfig.exe (Windows) y a docker (Docker Desktop).
 set -uo pipefail
 
-ENV_FILE="/home/triageuser/CertVerificableDGII/verifiably/verifiably-go/.env"
-GO_DIR="/home/triageuser/CertVerificableDGII/verifiably/verifiably-go"
+DEMO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+GO_DIR="$(cd "$DEMO_DIR/.." && pwd)/verifiably/verifiably-go"
+ENV_FILE="$GO_DIR/.env"
 
 # --- 1) Determinar la IP -----------------------------------------------------
 if [[ "${1:-}" != "" ]]; then

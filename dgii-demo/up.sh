@@ -8,8 +8,9 @@
 # usa ./switch-network.sh en su lugar.
 set -uo pipefail
 
-DEMO_DIR="/home/triageuser/CertVerificableDGII/dgii-demo"
-GO_DIR="/home/triageuser/CertVerificableDGII/verifiably/verifiably-go"
+DEMO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$DEMO_DIR/.." && pwd)"
+GO_DIR="$ROOT_DIR/verifiably/verifiably-go"
 OFV_DIR="$DEMO_DIR/ofv-api"
 CFG_ID="ImpuestosAlDiaCredential_vc+sd-jwt"
 ISSUER_META="http://localhost:7002/draft13/.well-known/openid-credential-issuer"

@@ -4,7 +4,7 @@
 #   ./down.sh
 set -uo pipefail
 
-GO_DIR="/home/triageuser/CertVerificableDGII/verifiably/verifiably-go"
+GO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/verifiably/verifiably-go"
 OFV_PID="/tmp/ofv-dgii.pid"
 
 say(){ printf '\n\033[1;34m▶ %s\033[0m\n' "$*"; }

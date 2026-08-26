@@ -33,6 +33,18 @@ command -v git >/dev/null || die "falta git"
 command -v python3 >/dev/null || die "falta python3"
 docker info >/dev/null 2>&1 || warn "Docker no responde — lo necesitarás para levantar el stack (abre Docker Desktop)"
 
+# --- 0) plataforma ------------------------------------------------------------
+# El stack se despliega con deploy.sh de upstream, que usa `sed -i` con sintaxis
+# GNU. El sed BSD de macOS lee el `-E` que le sigue como sufijo de backup y falla,
+# así que macOS está descartado por upstream, no por nosotros: no tiene arreglo
+# de este lado. Mejor fallar aquí que a mitad del despliegue.
+case "$(uname -s)" in
+  Darwin) die "macOS no está soportado: deploy.sh de upstream depende de GNU sed. Usa WSL2, Linux, o Git Bash en Windows." ;;
+esac
+if ! sed --version >/dev/null 2>&1; then
+  warn "tu 'sed' no parece GNU sed — deploy.sh de upstream puede fallar al renderizar la config"
+fi
+
 # --- 1) clone de verifiably ---------------------------------------------------
 if [ -d "$ROOT/verifiably/.git" ]; then
   ok "verifiably ya está clonado (no lo toco)"
@@ -86,10 +98,18 @@ OFV="$ROOT/dgii-demo/ofv-api"
 . "$OFV/.venv/bin/activate" && pip -q install -r "$OFV/requirements.txt" || die "falló pip install"
 ok "venv listo"
 if [ -f "$OFV/.env" ]; then
-  ok "ofv-api/.env ya existe"
+  ok "ofv-api/.env ya existe (no lo toco)"
 else
   cp "$OFV/.env.example" "$OFV/.env"
-  warn "creé ofv-api/.env desde el ejemplo — SIN secretos"
+  # Pre-rellenamos los dos valores que NO son secretos, para que el demo arranque
+  # sin edición manual. VERIFIABLY_API_KEY es el default público con el que
+  # deploy.sh levanta el stack (VERIFIABLY_API_KEYS=provisioner:change-me-provision-key),
+  # no una credencial real; VERIFIABLY_SCHEMA_ID es el id del esquema que viaja en
+  # verifiably-state/. Sin ellos, la primera emisión aborta con
+  # VerifiablyError("VERIFIABLY_API_KEY no configurada").
+  sed -i -E 's|^VERIFIABLY_API_KEY=.*|VERIFIABLY_API_KEY=change-me-provision-key|' "$OFV/.env"
+  sed -i -E 's|^VERIFIABLY_SCHEMA_ID=.*|VERIFIABLY_SCHEMA_ID=custom-dk017rvq43zd|' "$OFV/.env"
+  ok "ofv-api/.env creado y pre-configurado (sin secretos: GRAPH_* queda vacío)"
 fi
 
 cat <<EOF
