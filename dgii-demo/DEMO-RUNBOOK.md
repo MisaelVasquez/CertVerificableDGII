@@ -50,6 +50,41 @@ Los pasos manuales de abajo detallan cada parte por si necesitas depurar.
 
 ---
 
+## ⚠️ Verificación pendiente tras el pull del 2026-08-25
+
+**Qué falta y por qué.** El 2026-08-25 se actualizó verifiably a `b571e62` (606 commits). Ese
+pull cambió cómo se asignan y firman las status lists: ahora cada DPG emisor tiene su **propia**
+lista con su propia llave P-256/`did:jwk`, en vez de la lista única `v1` compartida. Se verificó
+a fondo por API — la lista nueva se sirve firmada en ES256, revocar enciende el bit correcto sin
+tocar las listas legacy, y reinstalar lo apaga.
+
+Lo que **no** se ha vuelto a ver desde el pull son los dos pasos que exigen un navegador:
+**reclamar** la credencial y **presentarla** para obtener el veredicto verde. La última
+comprobación de esos dos es del 2026-07-16, anterior al pull.
+
+**Cómo cerrarlo (unos 5 minutos):**
+
+1. `./up.sh` (o `./switch-network.sh` si cambiaste de red).
+2. Emite una credencial fresca desde el portal DGII (`http://localhost:8092/dgii`) o con:
+   ```bash
+   curl -s -X POST http://localhost:8092/ofv/certificaciones \
+     -H 'content-type: application/json' -d '{"rnc":"131000004","email":"prueba@example.com"}'
+   ```
+   Las ofertas caducan, así que emite una nueva en el momento de probar.
+3. Reclámala siguiendo la **sección 6** (ojo con la receta anti-CSRF: incógnito, IP exacta,
+   nunca `localhost`).
+4. Verifícala siguiendo la **sección 7**. Deja las políticas por defecto —
+   **`credential-status` debe evaluar en verde**, porque la credencial usa la Token Status List
+   IETF, que walt.id sí lee. Si sale en rojo con la credencial recién emitida y NO revocada,
+   ahí sí hay una regresión del pull: es exactamente lo que esta verificación busca.
+5. Opcional pero recomendable: revoca y vuelve a presentar la **misma** credencial → debe salir
+   ✕ con `credential-status` fallando. Eso cierra el contraste completo.
+
+Cuando salga verde con revelación selectiva, borra esta sección: el ciclo queda validado
+post-pull.
+
+---
+
 ## 0. Requisitos
 
 - Docker Desktop encendido (integración WSL). ~12 GB RAM libres.
