@@ -1,0 +1,384 @@
+[
+  {
+    "ID": "custom-djzchvwr6gbm",
+    "Name": "Certificación de Impuestos al Día",
+    "Std": "sd_jwt_vc (IETF)",
+    "DPGs": [
+      "Inji Certify · Pre-Auth"
+    ],
+    "Desc": "Certificación de Cumplimiento de Obligaciones Fiscales emitida por la DGII. Permite al contribuyente demostrar que está al día con sus obligaciones tributarias con revelación selectiva.",
+    "Custom": true,
+    "OwnerKey": "session-a7b55afe2ced7ec901bb5b6e138047e0",
+    "IssuerDisplayName": "Dirección General de Impuestos Internos (DGII)",
+    "AdditionalTypes": [
+      "ImpuestosAlDiaCredential"
+    ],
+    "FieldsSpec": [
+      {
+        "Name": "rnc_id",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "razonSocial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "nombreComercial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "tipoContribuyente",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "categoriaContribuyente",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "regimenTributario",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "actividadEconomica",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "estadoRNC",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "estadoCumplimiento",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "obligacionesActivas",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "domicilioFiscal",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "provincia",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "municipio",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "concepto",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "numeroReferencia",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "fechaEmision",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "fechaVencimiento",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "individualId",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      }
+    ],
+    "Variants": null,
+    "Vct": ""
+  },
+  {
+    "ID": "custom-djzleytsbj0a",
+    "Name": "Certificación de Impuestos al Díav3",
+    "Std": "w3c_vcdm_2",
+    "DPGs": [
+      "Inji Certify · Pre-Auth"
+    ],
+    "Desc": "ertificación de Cumplimiento de Obligaciones Fiscales emitida por la DGII. Permite al contribuyente demostrar que está al día con sus obligaciones tributarias con revelación selectiva.",
+    "Custom": true,
+    "OwnerKey": "session-1ce36348d2833f02ba92a6c437be3570",
+    "IssuerDisplayName": "Dirección General de Impuestos Internos (DGII)",
+    "AdditionalTypes": [
+      "ImpuestosAlDiaCredentialv3"
+    ],
+    "FieldsSpec": [
+      {
+        "Name": "rnc",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "razonSocial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "nombreComercial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "tipoContribuyente",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "estadoCumplimiento",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "fechaEmision",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "fechaVencimiento",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      }
+    ],
+    "Variants": null,
+    "Vct": ""
+  },
+  {
+    "ID": "custom-djzm728sgbgt",
+    "Name": "Certificación de Impuestos al Díav3",
+    "Std": "w3c_vcdm_2",
+    "DPGs": [
+      "Walt Community Stack"
+    ],
+    "Desc": "ertificación de Cumplimiento de Obligaciones Fiscales emitida por la DGII. Permite al contribuyente demostrar que está al día con sus obligaciones tributarias con revelación selectiva.",
+    "Custom": true,
+    "OwnerKey": "session-1ce36348d2833f02ba92a6c437be3570",
+    "IssuerDisplayName": "Dirección General de Impuestos Internos (DGII)",
+    "AdditionalTypes": [
+      "ImpuestosAlDiaCredentialv3"
+    ],
+    "FieldsSpec": [
+      {
+        "Name": "rnc",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "razonSocial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "nombreComercial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "tipoContribuyente",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "estadoCumplimiento",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "fechaEmision",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "fechaVencimiento",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      }
+    ],
+    "Variants": null,
+    "Vct": ""
+  },
+  {
+    "ID": "custom-dk017rvq43zd",
+    "Name": "Certificación de Impuestos al Día",
+    "Std": "sd_jwt_vc (IETF)",
+    "DPGs": [
+      "Walt Community Stack"
+    ],
+    "Desc": "Certificación de Cumplimiento de Obligaciones Fiscales emitida por la DGII. Permite al contribuyente demostrar que está al día con sus obligaciones tributarias con revelación selectiva.",
+    "Custom": true,
+    "OwnerKey": "api:provisioner",
+    "IssuerDisplayName": "Dirección General de Impuestos Internos (DGII)",
+    "AdditionalTypes": [
+      "ImpuestosAlDiaCredential"
+    ],
+    "FieldsSpec": [
+      {
+        "Name": "rnc_id",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "rnc",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "razonSocial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "nombreComercial",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "tipoContribuyente",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "categoriaContribuyente",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "regimenTributario",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "actividadEconomica",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "estadoRNC",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "estadoCumplimiento",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      },
+      {
+        "Name": "obligacionesActivas",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "domicilioFiscal",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "provincia",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "municipio",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "concepto",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "numeroReferencia",
+        "Datatype": "string",
+        "Format": "",
+        "Required": false
+      },
+      {
+        "Name": "fechaEmision",
+        "Datatype": "string",
+        "Format": "date",
+        "Required": true
+      },
+      {
+        "Name": "fechaVencimiento",
+        "Datatype": "string",
+        "Format": "date",
+        "Required": true
+      },
+      {
+        "Name": "individualId",
+        "Datatype": "string",
+        "Format": "",
+        "Required": true
+      }
+    ],
+    "Variants": null,
+    "Vct": ""
+  }
+]

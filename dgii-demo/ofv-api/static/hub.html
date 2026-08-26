@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Credenciales Verificables · Demo DGII (bootcamp CDPI)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --green:#2f7a1c; --green-soft:#e9f3e0; --navy:#24408a; --navy-soft:#eaeff9; --gold:#b0862f;
+  --bg:#eceef2; --panel:#ffffff; --panel-2:#f5f7fa; --ink:#182231; --muted:#5b6675;
+  --line:#dde2ea; --line-strong:#c8cfda;
+  --serif:ui-serif,Georgia,"Times New Roman",serif;
+  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 10px 30px rgba(16,24,40,.08);
+}
+@media (prefers-color-scheme:dark){:root{
+  --green:#6cbb45; --green-soft:#14260d; --navy:#7ea3e6; --navy-soft:#131d31; --gold:#d8b45f;
+  --bg:#0b0f17; --panel:#141b26; --panel-2:#111823; --ink:#e7ecf4; --muted:#94a1b5;
+  --line:#232f40; --line-strong:#324056; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.45);
+}}
+:root[data-theme="light"]{--green:#2f7a1c;--green-soft:#e9f3e0;--navy:#24408a;--navy-soft:#eaeff9;--gold:#b0862f;--bg:#eceef2;--panel:#fff;--panel-2:#f5f7fa;--ink:#182231;--muted:#5b6675;--line:#dde2ea;--line-strong:#c8cfda;}
+:root[data-theme="dark"]{--green:#6cbb45;--green-soft:#14260d;--navy:#7ea3e6;--navy-soft:#131d31;--gold:#d8b45f;--bg:#0b0f17;--panel:#141b26;--panel-2:#111823;--ink:#e7ecf4;--muted:#94a1b5;--line:#232f40;--line-strong:#324056;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55}
+.bar{border-bottom:1px solid var(--line);background:var(--panel)}
+.bar-in{max-width:1000px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.bar .k{font-family:var(--serif);font-weight:600;font-size:16px}
+.bar .k span{color:var(--muted);font-weight:400;font-family:var(--sans);font-size:13px}
+.demo-badge{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line-strong);border-radius:999px;padding:4px 10px}
+.theme-btn{background:transparent;border:1px solid var(--line-strong);color:var(--ink);width:32px;height:32px;border-radius:8px;cursor:pointer;display:grid;place-items:center}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 20px 60px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:700}
+h1{font-family:var(--serif);font-size:33px;line-height:1.15;margin:8px 0 10px;text-wrap:balance;max-width:16ch}
+.sub{color:var(--muted);font-size:16px;max-width:60ch;margin:0 0 34px}
+
+/* flujo */
+.flow{display:flex;flex-wrap:nowrap;align-items:stretch;gap:0;margin:0 0 10px;overflow-x:auto;padding-bottom:6px}
+.step{flex:1 1 0;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 14px 15px;box-shadow:var(--shadow)}
+.step .n{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;background:var(--muted);margin-bottom:8px}
+.step.g .n{background:var(--green)} .step.b .n{background:var(--navy)}
+.step .t{font-weight:700;font-size:14px;margin-bottom:2px}
+.step .d{font-size:12.5px;color:var(--muted);line-height:1.4}
+.arrow{flex:0 0 auto;display:grid;place-items:center;color:var(--line-strong);font-size:22px;padding:0 6px}
+.flow-note{font-size:12.5px;color:var(--muted);margin:2px 0 40px}
+.flow-note b{color:var(--ink)}
+@media (max-width:680px){.flow{flex-direction:column}.arrow{transform:rotate(90deg);padding:6px 0}}
+
+/* tarjetas de portal */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:680px){.cards{grid-template-columns:1fr}}
+.pcard{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.pcard::before{content:"";position:absolute;inset:0 auto 0 0;width:5px}
+.pcard.g::before{background:var(--green)} .pcard.b::before{background:var(--navy)}
+.pcard .role{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.pcard.g .role{color:var(--green)} .pcard.b .role{color:var(--navy)}
+.pcard h2{font-family:var(--serif);font-size:21px;margin:0 0 6px}
+.pcard p{color:var(--muted);font-size:14px;margin:0 0 20px;flex:1}
+.pcard .ic{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;margin-bottom:14px}
+.pcard.g .ic{background:var(--green-soft)} .pcard.b .ic{background:var(--navy-soft)}
+.btn{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;text-decoration:none;color:#fff;font-weight:700;font-size:14px;padding:11px 20px;border-radius:9px}
+.pcard.g .btn{background:var(--green)} .pcard.b .btn{background:var(--navy)}
+.btn:hover{filter:brightness(1.06)}
+footer{max-width:1000px;margin:0 auto;padding:26px 20px 40px;color:var(--muted);font-size:12px}
+footer .sep{border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="bar"><div class="bar-in">
+  <div class="k">Credenciales Verificables <span>· Bootcamp CDPI</span></div>
+  <span class="demo-badge">Demo</span>
+  <button class="theme-btn" id="theme" aria-label="Cambiar tema"><svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.6a6.4 6.4 0 000 12.8z" fill="currentColor"/></svg></button>
+</div></div>
+
+<main class="wrap">
+  <div class="eyebrow">Certificación de Impuestos al Día</div>
+  <h1>Una certificación fiscal verificable, de extremo a extremo</h1>
+  <p class="sub">La DGII emite la certificación como <strong>credencial verificable</strong>; el ciudadano
+    la guarda en su billetera y la presenta a un banco con <strong>revelación selectiva</strong> — probando
+    que está al día sin exponer datos de más. Y si cae en mora, la DGII la <strong>revoca</strong> y el banco la rechaza.</p>
+
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="t">Contribuyente</div><div class="d">Solicita su certificación con su RNC.</div></div>
+    <div class="arrow">→</div>
+    <div class="step g"><div class="n">2</div><div class="t">Oficina Virtual DGII</div><div class="d">Valida el cumplimiento y emite el SD-JWT firmado.</div></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><div class="t">Billetera digital</div><div class="d">El ciudadano recibe y guarda la credencial.</div></div>
+    <div class="arrow">→</div>
+    <div class="step b"><div class="n">4</div><div class="t">Banco (verificador)</div><div class="d">Solicita y valida la presentación.</div></div>
+  </div>
+  <p class="flow-note">Formato <b>SD-JWT VC</b> · <b>OpenID4VCI / OpenID4VP</b> · revocación por <b>Token Status List</b>.</p>
+
+  <div class="cards">
+    <div class="pcard g">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M18 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8l6 6v10a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h4"/></svg></div>
+      <div class="role">Emisor</div>
+      <h2>Oficina Virtual · DGII</h2>
+      <p>Solicite y emita la Certificación de Impuestos al Día. Incluye panel del operador para revocar y reinstalar.</p>
+      <a class="btn" href="/dgii">Entrar al portal DGII →</a>
+    </div>
+    <div class="pcard b">
+      <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 4.5-3 7.8-8 9-5-1.2-8-4.5-8-9V7Z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div class="role">Verificador · Relying party</div>
+      <h2>Banco de las Antillas</h2>
+      <p>Solicite al cliente que presente su certificación y valide el veredicto con revelación selectiva.</p>
+      <a class="btn" href="/verificador">Entrar al portal del banco →</a>
+    </div>
+  </div>
+</main>
+
+<footer><div class="sep">
+  <strong>Demo educativa</strong> del bootcamp de credenciales verificables (CDPI). Entorno de prueba con datos
+  ficticios. "Banco de las Antillas" es una entidad ficticia; no es un servicio real de la DGII ni está afiliado a ella.
+</div></footer>
+
+<script>
+document.querySelector('#theme').onclick=()=>{const c=document.documentElement.getAttribute('data-theme');
+  const dark=c?c==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+  document.documentElement.setAttribute('data-theme',dark?'light':'dark');};
+</script>
+</body>
+</html>

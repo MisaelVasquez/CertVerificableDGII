@@ -1,0 +1,36 @@
+# --- Secretos: NUNCA commitear -----------------------------------------------
+# ofv-api/.env contiene GRAPH_CLIENT_SECRET real (app registration DemoDGII).
+# Usa ofv-api/.env.example como plantilla.
+.env
+*.env
+!*.env.example
+!.env.example
+
+# --- El clone de verifiably no se versiona aquí ------------------------------
+# Es un repo ajeno (centre-for-dpi/verifiably). Lo restaura bootstrap.sh al
+# commit fijado, y le copia encima el estado DGII de verifiably-state/.
+/verifiably/
+
+# --- Python ------------------------------------------------------------------
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# --- Estado de ejecución con PII (direcciones de correo reales) --------------
+# Se regeneran solos al emitir. NO commitear: mapean credencial -> correo.
+dgii-demo/data/credencial-correos.json
+dgii-demo/data/credencial-bitacora.json
+
+# --- Artefactos de ejecución (se regeneran) ----------------------------------
+offer.json
+claim.html
+*.log
+*.pid
+*.bak
+*.bak.*
+
+# --- Sistema -----------------------------------------------------------------
+.DS_Store
+Thumbs.db

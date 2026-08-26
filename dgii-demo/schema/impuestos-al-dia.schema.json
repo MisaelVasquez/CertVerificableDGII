@@ -1,0 +1,106 @@
+{
+  "name": "Certificación de Impuestos al Día",
+  "desc": "Certificación de Cumplimiento de Obligaciones Fiscales emitida por la DGII. Permite al contribuyente demostrar que está al día con sus obligaciones tributarias con revelación selectiva.",
+  "std": "sd_jwt_vc (IETF)",
+  "issuer_display_name": "Dirección General de Impuestos Internos (DGII)",
+  "extra_type": "ImpuestosAlDiaCredential",
+  "fields": [
+    {
+      "name": "rnc_id",
+      "datatype": "string",
+      "required": true
+    },
+    {
+      "name": "rnc",
+      "datatype": "string",
+      "required": true
+    },
+    {
+      "name": "razonSocial",
+      "datatype": "string",
+      "required": true
+    },
+    {
+      "name": "nombreComercial",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "tipoContribuyente",
+      "datatype": "string",
+      "required": true
+    },
+    {
+      "name": "categoriaContribuyente",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "regimenTributario",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "actividadEconomica",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "estadoRNC",
+      "datatype": "string",
+      "required": true
+    },
+    {
+      "name": "estadoCumplimiento",
+      "datatype": "string",
+      "required": true
+    },
+    {
+      "name": "obligacionesActivas",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "domicilioFiscal",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "provincia",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "municipio",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "concepto",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "numeroReferencia",
+      "datatype": "string",
+      "required": false
+    },
+    {
+      "name": "fechaEmision",
+      "datatype": "string",
+      "format": "date",
+      "required": true
+    },
+    {
+      "name": "fechaVencimiento",
+      "datatype": "string",
+      "format": "date",
+      "required": true
+    },
+    {
+      "name": "individualId",
+      "datatype": "string",
+      "required": true
+    }
+  ]
+}

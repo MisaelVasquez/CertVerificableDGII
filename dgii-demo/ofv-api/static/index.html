@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Oficina Virtual · DGII — Certificación de Impuestos al Día (demo)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --brand:#2f7a1c; --brand-deep:#1f5c14; --brand-soft:#eaf3df;
+  --green:#4e9b2e; --green-deep:#2f7a1c; --lime:#8bc540; --navy:#16386f; --navy-deep:#0f2a54; --red:#e2231a;
+  --bg:#eef2ea; --panel:#ffffff; --panel-2:#f5f9f1; --ink:#1b2620; --muted:#5d6b5e;
+  --line:#dbe4d4; --line-strong:#c2cdb8;
+  --good:#1f7a2e; --good-bg:#e6f4e5; --bad:#c02318; --bad-bg:#fce9e7; --warn:#8a5a00; --warn-bg:#fbf1dc;
+  --serif:ui-serif,Georgia,"Times New Roman",serif;
+  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(20,40,20,.06),0 6px 20px rgba(20,40,20,.07);
+}
+@media (prefers-color-scheme:dark){:root{
+  --brand:#7cc24e; --brand-deep:#5aa233; --brand-soft:#16260f;
+  --green:#4e9b2e; --green-deep:#3f8a24; --lime:#9ed24f; --navy:#5b86c8; --navy-deep:#3f6bb0; --red:#f2938c;
+  --bg:#0e140c; --panel:#151d12; --panel-2:#121a0f; --ink:#e8efe2; --muted:#95a493;
+  --line:#26321f; --line-strong:#33432a;
+  --good:#5bd07f; --good-bg:#122a16; --bad:#f2938c; --bad-bg:#2c1513; --warn:#e8b765; --warn-bg:#2a2113;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+}}
+:root[data-theme="light"]{--brand:#2f7a1c;--brand-deep:#1f5c14;--brand-soft:#eaf3df;--green:#4e9b2e;--green-deep:#2f7a1c;--lime:#8bc540;--navy:#16386f;--navy-deep:#0f2a54;--red:#e2231a;--bg:#eef2ea;--panel:#fff;--panel-2:#f5f9f1;--ink:#1b2620;--muted:#5d6b5e;--line:#dbe4d4;--line-strong:#c2cdb8;--good:#1f7a2e;--good-bg:#e6f4e5;--bad:#c02318;--bad-bg:#fce9e7;--warn:#8a5a00;--warn-bg:#fbf1dc;}
+:root[data-theme="dark"]{--brand:#7cc24e;--brand-deep:#5aa233;--brand-soft:#16260f;--green:#4e9b2e;--green-deep:#3f8a24;--lime:#9ed24f;--navy:#5b86c8;--navy-deep:#3f6bb0;--red:#f2938c;--bg:#0e140c;--panel:#151d12;--panel-2:#121a0f;--ink:#e8efe2;--muted:#95a493;--line:#26321f;--line-strong:#33432a;--good:#5bd07f;--good-bg:#122a16;--bad:#f2938c;--bad-bg:#2c1513;--warn:#e8b765;--warn-bg:#2a2113;}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px}
+a{color:var(--brand)}
+
+/* Barra institucional DGII (banner blanco->verde) */
+.topbar{position:relative;background:linear-gradient(95deg,#fff 0%,#fff 20%,#eaf3da 33%,var(--green) 62%,var(--green-deep) 100%);border-top:4px solid #383838;box-shadow:inset 0 -3px 0 var(--green-deep)}
+.topbar-in{max-width:1020px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;min-height:72px}
+.logo{height:48px;width:auto;flex:0 0 auto}
+.demo-badge{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;text-shadow:0 1px 1px rgba(0,0,0,.15)}
+.theme-btn{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);color:#fff;width:34px;height:34px;border-radius:8px;cursor:pointer;display:grid;place-items:center}
+.theme-btn:hover{background:rgba(255,255,255,.3)}
+.subbar{background:var(--green-deep);color:#fff;box-shadow:inset 0 -1px 0 rgba(0,0,0,.18)}
+.subbar-in{max-width:1020px;margin:0 auto;padding:0 20px;display:flex;gap:2px}
+.tab{appearance:none;background:transparent;border:0;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-family:var(--sans);font-size:14px;font-weight:600;padding:12px 16px;cursor:pointer}
+.tab[aria-selected="true"]{color:#fff;border-bottom-color:var(--lime)}
+.tab:hover{color:#fff}
+
+.wrap{max-width:1020px;margin:0 auto;padding:26px 20px 60px}
+.lead{color:var(--muted);margin:0 0 20px;max-width:62ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.card.pad{padding:22px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
+
+h2.section-h{font-family:var(--serif);font-size:20px;margin:0 0 4px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);font-weight:700;margin-bottom:6px}
+label{display:block;font-size:13px;font-weight:600;margin:0 0 6px}
+.hint{font-size:12px;color:var(--muted);margin:4px 0 0}
+input[type=text],input[type=email]{width:100%;padding:11px 12px;border:1px solid var(--line-strong);border-radius:9px;background:var(--panel-2);color:var(--ink);font-family:var(--sans);font-size:15px}
+input:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:var(--brand)}
+.field{margin-bottom:16px}
+.row{display:flex;gap:10px}
+.row input{flex:1}
+button.btn{appearance:none;border:0;border-radius:9px;padding:11px 16px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-deep)}
+.btn-ghost{background:transparent;border:1px solid var(--line-strong);color:var(--ink)}
+.btn-ghost:hover{background:var(--panel-2)}
+.btn-sm{padding:6px 10px;font-size:12.5px;border-radius:7px}
+.btn-danger{background:var(--bad-bg);color:var(--bad);border:1px solid transparent}
+.btn-danger:hover{filter:brightness(.97)}
+button:disabled{opacity:.55;cursor:progress}
+
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.chip-good{color:var(--good);background:var(--good-bg)}
+.chip-bad{color:var(--bad);background:var(--bad-bg)}
+.chip-warn{color:var(--warn);background:var(--warn-bg)}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+
+.notice{border-radius:10px;padding:12px 14px;font-size:14px;margin-top:14px;border-left:3px solid}
+.notice-bad{background:var(--bad-bg);border-color:var(--bad);color:var(--ink)}
+.notice-warn{background:var(--warn-bg);border-color:var(--warn);color:var(--ink)}
+
+/* Resultado certificado */
+.cert{display:none;margin-top:22px}
+.cert-top{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.cert-qr{flex:0 0 auto;width:184px;height:184px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.cert-qr img{width:100%;height:100%;image-rendering:pixelated}
+.cert-meta{flex:1;min-width:240px}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;margin:12px 0 0;font-size:14px}
+dl.kv dt{color:var(--muted)}
+dl.kv dd{margin:0;font-weight:600}
+.mono{font-family:var(--mono);font-size:12.5px;word-break:break-all}
+.offer{margin-top:14px}
+.offer .lbl{font-size:12px;color:var(--muted);margin-bottom:5px}
+.offer .box{display:flex;gap:8px;align-items:center}
+.offer code{flex:1;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-family:var(--mono);font-size:11px;color:var(--muted);word-break:break-all;max-height:54px;overflow:auto}
+
+/* Tabla operador */
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.toolbar .count{font-size:13px;color:var(--muted)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px}
+thead th{background:var(--panel-2);text-align:left;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:11px 14px;border-bottom:1px solid var(--line)}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--panel-2)}
+td.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px}
+.empty{padding:34px;text-align:center;color:var(--muted);font-size:14px}
+
+/* Timeline / bitácora */
+tr.hist-row:hover{background:transparent}
+tr.hist-row>td{background:var(--panel-2);padding:6px 14px 16px}
+.timeline{list-style:none;margin:6px 0 0;padding:0;font-size:13px}
+.timeline.msg{color:var(--muted);padding:10px 2px}
+.tl-item{display:flex;gap:12px;padding:9px 0;position:relative}
+.tl-item:not(:last-child)::before{content:"";position:absolute;left:13px;top:30px;bottom:-9px;width:2px;background:var(--line)}
+.tl-dot{flex:none;width:28px;height:28px;border-radius:999px;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--panel);border:1px solid var(--line);color:var(--muted);z-index:1}
+.tl-item.tl-good .tl-dot{color:#1a7f37;border-color:#1a7f37}
+.tl-item.tl-bad .tl-dot{color:#b3261e;border-color:#b3261e}
+.tl-item.tl-info .tl-dot{color:#16386f;border-color:#16386f}
+.tl-head{font-weight:700;color:var(--ink);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.tl-time{font-weight:500;font-size:11.5px;color:var(--muted)}
+.tl-detail{color:var(--muted);margin-top:2px}
+
+footer{max-width:1020px;margin:0 auto;padding:8px 20px 40px;color:var(--muted);font-size:12px}
+footer .sep{border-top:1px solid var(--line);padding-top:14px}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spinner{animation:none}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <img class="logo" src="/static/logo.png" alt="Impuestos Internos — DGII, República Dominicana">
+    <span class="demo-badge">● Demo / Simulación</span>
+    <button class="theme-btn" id="theme" title="Cambiar tema" aria-label="Cambiar tema"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 1.6a6.4 6.4 0 000 12.8z" fill="currentColor"/></svg></button>
+  </div>
+  <div class="subbar">
+    <div class="subbar-in" role="tablist">
+      <button class="tab" id="tab-c" role="tab" aria-selected="true" onclick="showTab('c')">Solicitar certificación</button>
+      <button class="tab" id="tab-o" role="tab" aria-selected="false" onclick="showTab('o')">Panel del operador</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== Contribuyente ===== -->
+  <section id="view-c">
+    <div class="eyebrow">Certificación de Impuestos al Día</div>
+    <h2 class="section-h">Solicite su certificación de cumplimiento fiscal</h2>
+    <p class="lead">Ingrese su RNC y un correo electrónico. Si está al día con sus obligaciones,
+      la DGII emitirá una <strong>credencial verificable</strong> que podrá guardar en su billetera
+      y presentar (por ejemplo, a un banco) revelando solo lo necesario.</p>
+
+    <div class="grid2">
+      <div class="card pad">
+        <form id="form" autocomplete="off">
+          <div class="field">
+            <label for="rnc">RNC / Cédula</label>
+            <div class="row">
+              <input type="text" id="rnc" name="rnc" inputmode="numeric" placeholder="131000001" required>
+              <button type="button" class="btn btn-ghost" id="check" title="Consultar estado sin emitir">Consultar estado</button>
+            </div>
+            <div id="status-pill" class="hint" style="min-height:18px"></div>
+          </div>
+          <div class="field">
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" placeholder="contribuyente@correo.com" required>
+            <p class="hint">Se enviará la credencial (enlace + código QR) a este correo.</p>
+          </div>
+          <button type="submit" class="btn btn-primary" id="submit">Solicitar certificación</button>
+        </form>
+        <div id="form-error"></div>
+      </div>
+
+      <div class="card pad" style="background:var(--panel-2)">
+        <div class="eyebrow">¿Cómo funciona?</div>
+        <ol style="margin:8px 0 0;padding-left:18px;font-size:13.5px;color:var(--muted);line-height:1.7">
+          <li>La OFV valida su RNC contra el registro de cumplimiento.</li>
+          <li>Si está <strong>al día</strong>, emite una credencial verificable (SD-JWT) firmada por la DGII.</li>
+          <li>Recibe un <strong>QR / enlace</strong> para guardarla en su billetera digital.</li>
+          <li>La presenta a quien lo requiera con <strong>revelación selectiva</strong> — prueba que está al día sin exponer domicilio, obligaciones ni razón social.</li>
+        </ol>
+        <p class="hint" style="margin-top:14px">RNC de prueba al día: <code class="mono">131000001</code> · en mora: <code class="mono">131000006</code></p>
+      </div>
+    </div>
+
+    <!-- Resultado -->
+    <div class="card pad cert" id="cert">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+        <span class="chip chip-good"><span class="dot"></span> Certificación emitida</span>
+        <span id="cert-envio"></span>
+      </div>
+      <div class="cert-top">
+        <div class="cert-qr"><img id="cert-qr-img" alt="Código QR de la credencial"></div>
+        <div class="cert-meta">
+          <dl class="kv">
+            <dt>Contribuyente</dt><dd id="cert-razon"></dd>
+            <dt>RNC</dt><dd class="mono" id="cert-rnc"></dd>
+            <dt>Estado</dt><dd><span class="chip chip-good" id="cert-estado"><span class="dot"></span> AL DÍA</span></dd>
+            <dt>Nº credencial</dt><dd class="mono" id="cert-id"></dd>
+          </dl>
+          <div class="offer">
+            <div class="lbl">Enlace de la oferta (OpenID4VCI)</div>
+            <div class="box">
+              <code id="cert-offer"></code>
+              <button class="btn btn-ghost btn-sm" id="copy-offer" type="button">Copiar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Operador ===== -->
+  <section id="view-o" class="hidden">
+    <div class="eyebrow">Administración</div>
+    <h2 class="section-h">Panel del operador</h2>
+    <p class="lead">Certificaciones emitidas por la OFV. Puede <strong>revocar</strong> una certificación
+      (por ejemplo, si el contribuyente cae en mora) — los verificadores la rechazarán al instante — o
+      <strong>reinstalarla</strong> si vuelve a estar al día.</p>
+    <div class="toolbar">
+      <button class="btn btn-ghost btn-sm" id="refresh" type="button">↻ Actualizar</button>
+      <span class="count" id="op-count"></span>
+    </div>
+    <div class="card" style="overflow:hidden">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>RNC</th><th>Contribuyente</th><th>Nº referencia</th><th>Emitida</th><th>Estado</th><th style="text-align:right">Acción</th>
+          </tr></thead>
+          <tbody id="op-body"><tr><td colspan="6" class="empty">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="sep">
+  <strong>Demo educativa</strong> del bootcamp de credenciales verificables (CDPI). Entorno de prueba —
+  no es un servicio real de la Dirección General de Impuestos Internos ni está afiliado a ella.
+  Datos ficticios.
+</div></footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const api = async (m,u,b) => {
+  const o={method:m,headers:{}};
+  if(b){o.headers['Content-Type']='application/json';o.body=JSON.stringify(b);}
+  const r=await fetch(u,o); let d=null; try{d=await r.json();}catch(e){}
+  return {ok:r.ok,status:r.status,data:d};
+};
+const esc = s => (s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fecha = s => { if(!s)return'—'; const d=new Date(s); return isNaN(d)?s:d.toLocaleString('es-DO',{year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'}); };
+
+/* Tema */
+const themeBtn=$('#theme');
+themeBtn.onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');
+  const dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+  document.documentElement.setAttribute('data-theme',dark?'light':'dark');};
+
+/* Tabs */
+function showTab(t){
+  $('#view-c').classList.toggle('hidden',t!=='c');
+  $('#view-o').classList.toggle('hidden',t!=='o');
+  $('#tab-c').setAttribute('aria-selected',t==='c');
+  $('#tab-o').setAttribute('aria-selected',t==='o');
+  if(t==='o') cargarOperador();
+}
+window.showTab=showTab;
+
+/* Consultar estado */
+$('#check').onclick=async()=>{
+  const rnc=$('#rnc').value.trim(); const pill=$('#status-pill');
+  if(!rnc){pill.innerHTML='';return;}
+  pill.innerHTML='<span class="spinner"></span> Consultando…';
+  const {ok,status,data}=await api('GET',`/ofv/contribuyentes/${encodeURIComponent(rnc)}`);
+  if(status===404){pill.innerHTML='<span class="chip chip-warn"><span class="dot"></span> RNC no encontrado</span>';return;}
+  if(!ok){pill.textContent='Error consultando el estado.';return;}
+  const chip=data.al_dia?'<span class="chip chip-good"><span class="dot"></span> Al día</span>':`<span class="chip chip-bad"><span class="dot"></span> ${esc(data.estado_cumplimiento)}</span>`;
+  pill.innerHTML=`${chip} &nbsp;<span style="color:var(--muted)">${esc(data.razon_social||'')}</span>`;
+};
+
+/* Solicitar certificación */
+$('#form').onsubmit=async(e)=>{
+  e.preventDefault();
+  const rnc=$('#rnc').value.trim(), email=$('#email').value.trim();
+  const btn=$('#submit'), err=$('#form-error'), cert=$('#cert');
+  err.innerHTML=''; cert.style.display='none';
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Emitiendo…';
+  const {ok,status,data}=await api('POST','/ofv/certificaciones',{rnc,email});
+  btn.disabled=false; btn.textContent='Solicitar certificación';
+  if(!ok){
+    const cls=status===409?'notice-warn':'notice-bad';
+    err.innerHTML=`<div class="notice ${cls}">${esc(data?.detail||'No se pudo emitir la certificación.')}</div>`;
+    return;
+  }
+  $('#cert-razon').textContent=data.razon_social||'—';
+  $('#cert-rnc').textContent=data.rnc;
+  $('#cert-id').textContent=data.credential_id;
+  $('#cert-qr-img').src=data.qr_data_uri||'';
+  $('#cert-offer').textContent=data.offer_uri||'';
+  $('#cert-envio').innerHTML=data.correo_enviado
+    ? `<span class="chip chip-good"><span class="dot"></span> ✉ Enviada a ${esc(data.enviado_a)}</span>`
+    : `<span class="chip chip-warn"><span class="dot"></span> Correo no enviado (deshabilitado)</span>`;
+  cert.style.display='block';
+  cert.scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+$('#copy-offer').onclick=()=>{navigator.clipboard.writeText($('#cert-offer').textContent);
+  $('#copy-offer').textContent='Copiado ✓';setTimeout(()=>$('#copy-offer').textContent='Copiar',1500);};
+
+/* Panel operador */
+async function cargarOperador(){
+  const body=$('#op-body'), count=$('#op-count');
+  body.innerHTML='<tr><td colspan="6" class="empty"><span class="spinner"></span> Cargando…</td></tr>';
+  const {ok,data}=await api('GET','/ofv/certificaciones');
+  if(!ok){body.innerHTML='<tr><td colspan="6" class="empty">No se pudo cargar el listado.</td></tr>';return;}
+  const items=data.items||[];
+  const act=items.filter(i=>i.status==='active').length;
+  count.textContent=`${items.length} certificaciones · ${act} vigentes · ${items.length-act} revocadas`;
+  if(!items.length){body.innerHTML='<tr><td colspan="6" class="empty">Aún no hay certificaciones emitidas.</td></tr>';return;}
+  body.innerHTML=items.map(i=>{
+    const rev=i.status==='revoked';
+    const estado=rev?'<span class="chip chip-bad"><span class="dot"></span> Revocada</span>':'<span class="chip chip-good"><span class="dot"></span> Vigente</span>';
+    const accion=rev
+      ?`<button class="btn btn-ghost btn-sm" data-act="reinstalar" data-id="${esc(i.credential_id)}">Reinstalar</button>`
+      :`<button class="btn btn-danger btn-sm" data-act="revocar" data-id="${esc(i.credential_id)}">Revocar</button>`;
+    const hist=`<button class="btn btn-ghost btn-sm" data-act="historial" data-id="${esc(i.credential_id)}">Historial</button>`;
+    return `<tr>
+      <td class="num">${esc(i.rnc||'—')}</td>
+      <td>${esc(i.razon_social||'—')}</td>
+      <td class="num">${esc(i.numero_referencia||'—')}</td>
+      <td style="color:var(--muted)">${esc(fecha(i.issued_at))}</td>
+      <td>${estado}</td>
+      <td style="text-align:right;white-space:nowrap">${hist} ${accion}</td>
+    </tr>`;
+  }).join('');
+  body.querySelectorAll('button[data-act]').forEach(b=>b.onclick=()=>accionOperador(b));
+}
+async function accionOperador(btn){
+  const id=btn.dataset.id, act=btn.dataset.act;
+  if(act==='historial') return toggleHistorial(btn);
+  const url=act==='revocar'?`/ofv/certificaciones/${encodeURIComponent(id)}/revocar`
+                           :`/ofv/certificaciones/${encodeURIComponent(id)}/reinstalar`;
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>';
+  const {ok,data}=await api('POST',url);
+  if(!ok){btn.disabled=false;btn.textContent=act==='revocar'?'Revocar':'Reinstalar';
+    alert((data&&data.detail)||'La operación falló.');return;}
+  cargarOperador();
+}
+
+const EVENTO_META={
+  emitida:{ic:'✓',cls:'tl-good',txt:'Emitida'},
+  revocada:{ic:'✕',cls:'tl-bad',txt:'Revocada'},
+  reinstalada:{ic:'↺',cls:'tl-good',txt:'Reinstalada'},
+  verificada:{ic:'🔍',cls:'tl-info',txt:'Verificada'},
+};
+async function toggleHistorial(btn){
+  const tr=btn.closest('tr'), next=tr.nextElementSibling;
+  if(next&&next.classList.contains('hist-row')){next.remove();btn.classList.remove('is-active');return;}
+  btn.classList.add('is-active');
+  const row=document.createElement('tr'); row.className='hist-row';
+  row.innerHTML='<td colspan="6"><div class="timeline msg"><span class="spinner"></span> Cargando historial…</div></td>';
+  tr.after(row);
+  const cell=row.querySelector('td');
+  const {ok,data}=await api('GET',`/ofv/certificaciones/${encodeURIComponent(btn.dataset.id)}/historial`);
+  if(!ok){cell.innerHTML='<div class="timeline msg">No se pudo cargar el historial.</div>';return;}
+  const ev=data.eventos||[];
+  if(!ev.length){cell.innerHTML='<div class="timeline msg">Sin eventos registrados todavía.</div>';return;}
+  cell.innerHTML='<ul class="timeline">'+ev.map(e=>{
+    const m=EVENTO_META[e.evento]||{ic:'•',cls:'',txt:e.evento};
+    return `<li class="tl-item ${m.cls}"><span class="tl-dot">${m.ic}</span>
+      <div><div class="tl-head">${esc(m.txt)} <span class="tl-time">${esc(fecha(e.ts))}</span></div>
+      <div class="tl-detail">${esc(e.detalle||'')}</div></div></li>`;
+  }).join('')+'</ul>';
+}
+$('#refresh').onclick=cargarOperador;
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+diff --git a/verifiably-go/deploy/compose/injiweb/config/certs-runtime/oidckeystore.p12 b/verifiably-go/deploy/compose/injiweb/config/certs-runtime/oidckeystore.p12
+index 2d7d236..f1a79a0 100644
+Binary files a/verifiably-go/deploy/compose/injiweb/config/certs-runtime/oidckeystore.p12 and b/verifiably-go/deploy/compose/injiweb/config/certs-runtime/oidckeystore.p12 differ
+diff --git a/verifiably-go/deploy/compose/injiweb/config/mimoto-issuers-config.json b/verifiably-go/deploy/compose/injiweb/config/mimoto-issuers-config.json
+index 11c95d9..0601988 100644
+--- a/verifiably-go/deploy/compose/injiweb/config/mimoto-issuers-config.json
++++ b/verifiably-go/deploy/compose/injiweb/config/mimoto-issuers-config.json
+@@ -17,10 +17,10 @@
+         }
+       ],
+       "client_id": "wallet-demo-client",
+-      "redirect_uri": "https://inji-web.verifiably.ysalabs.work/redirect",
++      "redirect_uri": "http://10.198.185.234:3004/redirect",
+       "token_endpoint": "http://localhost:8099/v1/mimoto/get-token/Farmer",
+-      "authorization_audience": "https://esignet.verifiably.ysalabs.work/v1/esignet/oauth/v2/token",
+-      "proxy_token_endpoint": "https://esignet.verifiably.ysalabs.work/v1/esignet/oauth/v2/token",
++      "authorization_audience": "http://10.198.185.234:3005/v1/esignet/oauth/v2/token",
++      "proxy_token_endpoint": "http://10.198.185.234:3005/v1/esignet/oauth/v2/token",
+       "client_alias": "wallet-demo-client",
+       "qr_code_type": "EmbeddedVC",
+       "credential_issuer_host": "http://certify-nginx/v1/certify",
+@@ -44,10 +44,10 @@
+         }
+       ],
+       "client_id": "wallet-demo-client",
+-      "redirect_uri": "https://inji-web.verifiably.ysalabs.work/redirect",
++      "redirect_uri": "http://10.198.185.234:3004/redirect",
+       "token_endpoint": "http://localhost:8099/v1/mimoto/get-token/MockMdl",
+-      "authorization_audience": "https://esignet.verifiably.ysalabs.work/v1/esignet/oauth/v2/token",
+-      "proxy_token_endpoint": "https://esignet.verifiably.ysalabs.work/v1/esignet/oauth/v2/token",
++      "authorization_audience": "http://10.198.185.234:3005/v1/esignet/oauth/v2/token",
++      "proxy_token_endpoint": "http://10.198.185.234:3005/v1/esignet/oauth/v2/token",
+       "client_alias": "wallet-demo-client",
+       "qr_code_type": "EmbeddedVC",
+       "credential_issuer_host": "http://certify-nginx/v1/certify",
+diff --git a/verifiably-go/deploy/compose/stack/inji/certify/certify-postgres-dataprovider.properties b/verifiably-go/deploy/compose/stack/inji/certify/certify-postgres-dataprovider.properties
+index 4b78910..563060c 100644
+--- a/verifiably-go/deploy/compose/stack/inji/certify/certify-postgres-dataprovider.properties
++++ b/verifiably-go/deploy/compose/stack/inji/certify/certify-postgres-dataprovider.properties
+@@ -71,7 +71,7 @@ mosip.certify.credential-config.issuer.display={\
+ # --- PostgreSQL data provider (verifiably dynamic claims) ------------------
+ # Claims are read from certify.vc_subject keyed by the eSignet token `sub` (:id).
+ # One mapping per credential scope; the query string is taken verbatim.
+-mosip.certify.data-provider-plugin.postgres.scope-query-mapping={'mock_identity_vc_ldp':'select "fullName", "givenName", "familyName", "gender", "dateOfBirth", "email", "phoneNumber" from certify.vc_subject_person where individual_id=:id'}
++mosip.certify.data-provider-plugin.postgres.scope-query-mapping={'mock_identity_vc_ldp':'select "fullName", "givenName", "familyName", "gender", "dateOfBirth", "email", "phoneNumber" from certify.vc_subject_person where individual_id=:id','impuestosaldiacredential_vc_sd_jwt':'select "rnc", "razonSocial", "nombreComercial", "tipoContribuyente", "estadoCumplimiento", "fechaEmision", "fechaVencimiento", "statusIdx", "statusUri" from certify.vc_subject_impuestosaldiacredential where individual_id=:id','impuestosaldiacredentialv2_vc_ldp':'select "rnc", "razonSocial", "nombreComercial", "tipoContribuyente", "estadoCumplimiento", "fechaEmision", "fechaVencimiento", "statusIdx", "statusUri" from certify.vc_subject_impuestosaldiacredentialv2 where individual_id=:id'}
+ 
+ # --- eSignet token validation (subdomain, reachable via the caddy-public ---
+ # esignet alias). The upstream default derives authn.* from
+@@ -83,3 +83,10 @@ mosip.certify.data-provider-plugin.postgres.scope-query-mapping={'mock_identity_
+ mosip.certify.authorization.url=${mosip_certify_authorization_url}
+ mosip.certify.authn.issuer-uri=${mosip_certify_authorization_url}
+ mosip.certify.authn.jwk-set-uri=${mosip_certify_authorization_url}/.well-known/jwks.json
++mosip.certify.indexed-mappings.rnc=$.rnc
++mosip.certify.indexed-mappings.razonSocial=$.razonSocial
++mosip.certify.indexed-mappings.nombreComercial=$.nombreComercial
++mosip.certify.indexed-mappings.tipoContribuyente=$.tipoContribuyente
++mosip.certify.indexed-mappings.estadoCumplimiento=$.estadoCumplimiento
++mosip.certify.indexed-mappings.fechaEmision=$.fechaEmision
++mosip.certify.indexed-mappings.fechaVencimiento=$.fechaVencimiento
+diff --git a/verifiably-go/deploy/compose/stack/inji/esignet/credential-scopes.properties b/verifiably-go/deploy/compose/stack/inji/esignet/credential-scopes.properties
+index 9cfabbe..75c5178 100644
+--- a/verifiably-go/deploy/compose/stack/inji/esignet/credential-scopes.properties
++++ b/verifiably-go/deploy/compose/stack/inji/esignet/credential-scopes.properties
+@@ -6,5 +6,5 @@
+ # were removed from docker-compose.yml so this file is authoritative.
+ #
+ # One entry per credential scope (Flow B appends a line-pair per new schema):
+-mosip.esignet.supported.credential.scopes={'mock_identity_vc_ldp'}
+-mosip.esignet.credential.scope-resource-mapping={'mock_identity_vc_ldp':'http://certify-nginx:80/v1/certify/issuance/credential'}
++mosip.esignet.supported.credential.scopes={'mock_identity_vc_ldp','impuestosaldiacredential_vc_sd_jwt','impuestosaldiacredentialv2_vc_ldp'}
++mosip.esignet.credential.scope-resource-mapping={'mock_identity_vc_ldp':'http://certify-nginx:80/v1/certify/issuance/credential','impuestosaldiacredential_vc_sd_jwt':'http://certify-nginx:80/v1/certify/issuance/credential','impuestosaldiacredentialv2_vc_ldp':'http://certify-nginx:80/v1/certify/issuance/credential'}
+diff --git a/verifiably-go/deploy/k8s/config/issuer/issuer-service.conf b/verifiably-go/deploy/k8s/config/issuer/issuer-service.conf
+index 9450ec6..e4043d2 100644
+--- a/verifiably-go/deploy/k8s/config/issuer/issuer-service.conf
++++ b/verifiably-go/deploy/k8s/config/issuer/issuer-service.conf
+@@ -1 +1 @@
+-baseUrl = "http://${SERVICE_HOST}:${ISSUER_API_PORT}"
++baseUrl = "http://192.168.0.115:7002"
+diff --git a/verifiably-go/deploy/k8s/config/verifier/verifier-service.conf b/verifiably-go/deploy/k8s/config/verifier/verifier-service.conf
+index da73590..012598f 100644
+--- a/verifiably-go/deploy/k8s/config/verifier/verifier-service.conf
++++ b/verifiably-go/deploy/k8s/config/verifier/verifier-service.conf
+@@ -1 +1 @@
+-baseUrl = "http://${SERVICE_HOST}:${VERIFIER_API_PORT}"
++baseUrl = "http://192.168.0.115:7003"
