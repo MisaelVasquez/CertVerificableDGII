@@ -117,16 +117,23 @@ cat <<EOF
 ============================================================
   ✅ BOOTSTRAP LISTO
 ============================================================
-  Falta lo que NO puede venir en el repo:
+  ofv-api/.env ya quedó configurado (API key + schema id). NO hace
+  falta editarlo salvo que quieras envío de correo, que necesita
+  rellenar GRAPH_* y poner OFV_EMAIL_ENABLED=true — requiere tu propio
+  app registration en Entra con Mail.Send + consentimiento de admin.
+  Sin eso el demo funciona igual: la respuesta trae el offer_uri y el QR.
 
-  1) ofv-api/.env  ->  rellena los secretos:
-       VERIFIABLY_API_KEY   (por defecto del stack: change-me-provision-key)
-       VERIFIABLY_SCHEMA_ID=custom-dk017rvq43zd
-       GRAPH_* + OFV_EMAIL_ENABLED=true  (sólo si quieres envío de correo;
-       requiere su propio app registration con Mail.Send + consentimiento admin)
+  SIGUIENTE PASO — con Docker Desktop abierto:
 
-  2) Fija la red y levanta todo:
        cd dgii-demo && ./switch-network.sh
+
+     Detecta la IP, la escribe en .env, despliega, y NORMALIZA el vct
+     del catálogo a la IP nueva. Es imprescindible: el vct viene fijado
+     a la IP de la máquina anterior y si no coincide, la presentación
+     falla con "your wallet has no credential matching this request".
+     Si la detección de IP falla:  ./switch-network.sh <IP>
+
+     La primera vez descarga varios GB de imágenes: 15-30 min.
 
      Ese script detecta la IP, la escribe en .env, despliega, y NORMALIZA el
      vct del catálogo a la IP nueva. Es imprescindible: el vct viene fijado a
